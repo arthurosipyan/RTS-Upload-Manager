@@ -9,33 +9,22 @@ from tkinter.filedialog import askopenfilename
 import pandas as pd
 
 
-def total_invoices(file):
-    return len(rts_upload(file, 'Invoice#'))
-
-
-def total_revenue(file):
-    revenue = 0
-    for x in rts_upload(file, 'InvAmt'):
-        revenue += x
-    return revenue
+def df_column(file, column):
+    df = pd.read_excel(file)
+    return df[column]
 
 
 def invoices(file):
     upload_files = ""
-    for file in rts_upload(file, 'Invoice#'):
+    for file in df_column(file, 'Invoice#').tolist():
         upload_files += '\"' + file + '\" '
     return upload_files
-
-
-def rts_upload(file, column):
-    df = pd.read_excel(file)
-    return df[column].tolist()
 
 
 if __name__ == '__main__':
     Tk().withdraw()  # we don't want a full GUI, so keep the root window from appearing
     filename = askopenfilename()  # show an "Open" dialog box and return the path to the selected file
     print("File:", filename)
-    print("Total Invoices:", total_invoices(filename))
-    print("Total Revenue:", total_revenue(filename))
+    print("Total Invoices:", len(df_column(filename, 'Invoice#').tolist()))
+    print("Total Revenue:", "${:,.2f}".format(df_column(filename, 'InvAmt').sum()))
     print("Invoices:", invoices(filename))
