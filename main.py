@@ -1,9 +1,5 @@
-# read spreadsheet and save pro #'s column with no more than 25 rows at a time
-
-# Example of spreadsheet column format:
 # ClientNo (0) | Invoice# (1) | DebtorNo (2) | DebtorName (3) | Pono (4) | InvDate (5) | InvAmt (6)
 
-# example output: "OT1900" "OT1901" "OT1903"
 from tkinter import Tk     # from tkinter import Tk for Python 3.x
 from tkinter.filedialog import askopenfilename
 import pandas as pd
@@ -16,8 +12,14 @@ def df_column(file, column):
 
 def invoices(file):
     upload_files = ""
+    count = 0
     for file in df_column(file, 'Invoice#').tolist():
-        upload_files += '\"' + file + '\" '
+        if count <= 30:
+            upload_files += '\"' + file + '\" '
+            count += 1
+        else:
+            upload_files += '\n'
+            count = 0
     return upload_files
 
 
@@ -27,4 +29,10 @@ if __name__ == '__main__':
     print("File:", filename)
     print("Total Invoices:", len(df_column(filename, 'Invoice#').tolist()))
     print("Total Revenue:", "${:,.2f}".format(df_column(filename, 'InvAmt').sum()))
-    print("Invoices:", invoices(filename))
+    print(invoices(filename))
+
+# TODO:
+# - Tkinter GUI
+# - open file button
+# - display results
+# - copy to clipboard button and indicate once copied
