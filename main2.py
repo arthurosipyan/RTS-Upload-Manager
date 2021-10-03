@@ -32,4 +32,4 @@ if __name__ == '__main__':
     print("File:", file)
     print("Total Invoices:", total_invoices)
     print("Total Revenue:", total_revenue)
-    # print_invoices(df.iloc[:, 1])
+    print_invoices(df.iloc[:, 1])
