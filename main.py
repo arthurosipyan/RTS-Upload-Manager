@@ -1,39 +1,46 @@
-# ClientNo (0) | Invoice# (1) | DebtorNo (2) | DebtorName (3) | Pono (4) | InvDate (5) | InvAmt (6)
+from main2 import get_row_count, get_revenue, print_invoices
 
 import os
-from tkinter import Tk  # from tkinter import Tk for Python 3.x
-from tkinter.filedialog import askopenfilename
 import pandas as pd
+import tkinter as tk
+from tkinter import filedialog as fd
+global result
 
 
-def get_revenue(sheet):
-    return "${:,.2f}".format(sheet.sum())
+# def run_report(filename):
+#     df = pd.read_excel(filename, sheet_name=-1)  # create df of spreadsheet
+#     file = "File:", os.path.basename(filename)
+#     total_invoices = "Total Invoices:", get_row_count(df)
+#     total_revenue = "Total Revenue:", get_revenue(df.iloc[:, -1])
+#     # print_invoices(df.iloc[:, 1])
+#     global result
+#     result = total_invoices
+#
 
-
-def get_row_count(sheet):
-    return len(sheet.index)
-
-
-def print_invoices(sheet):
-    print("Invoices:\n")
-    for invoice in sheet.tolist():
-        print("\"" + invoice + "\"")
+def open_file():
+    file = fd.askopenfilename(
+        initialdir='/',
+        title='Open Excel File',
+        filetypes=[('Excel File', '*.xlsx')]
+    )
+    root.insert(tk.END, file)
+    file = open(file, 'r')
+    data = file.read()
+    report.insert(tk.END, data)
+    file.close()
 
 
 if __name__ == '__main__':
-    Tk().withdraw()  # we don't want a full GUI, so keep the root window from appearing
-    filename = askopenfilename()  # show an "Open" dialog box and return the path to the selected file
-    df = pd.read_excel(filename, sheet_name=-1)  # create df of spreadsheet
+    root = tk.Tk()
+    root.title('RTS Upload Manager')
+    root.geometry('500x300')
 
-    print("File:", os.path.basename(filename))
-    print("Total Invoices:", get_row_count(df))
-    print("Total Revenue:", get_revenue(df.iloc[:, -1]))
-    print_invoices(df.iloc[:, 1])
+    report = tk.Text(root, height=20, width=40)
 
-# TODO:
-# - Tkinter GUI
-# - open file button
-# - display results
-# - copy to clipboard button and indicate once copied
+    button = tk.Button(root, text="Open", command=open_file)
+    button.grid(column=1, row=1)
 
+    # T.pack()
+    # T.insert(tk.END, "Just a text Widget\nin two lines\n")  # return our report here
 
+    root.mainloop()
