@@ -4,7 +4,6 @@ import os
 import pandas as pd
 import tkinter as tk
 from tkinter import filedialog as fd
-global result
 
 
 # def run_report(filename):
@@ -23,8 +22,8 @@ def open_file():
         title='Open Excel File',
         filetypes=[('Excel File', '*.xlsx')]
     )
-    root.insert(tk.END, file)
-    file = open(file, 'r')
+    report.insert(tk.END, file)
+    file = open(file, 'r', encoding="utf8")
     data = file.read()
     report.insert(tk.END, data)
     file.close()

@@ -25,15 +25,11 @@ if __name__ == '__main__':
     filename = askopenfilename()  # show an "Open" dialog box and return the path to the selected file
     df = pd.read_excel(filename, sheet_name=-1)  # create df of spreadsheet
 
-    print("File:", os.path.basename(filename))
-    print("Total Invoices:", get_row_count(df))
-    print("Total Revenue:", get_revenue(df.iloc[:, -1]))
-    print_invoices(df.iloc[:, 1])
+    file = os.path.basename(filename)
+    total_invoices = get_row_count(df)
+    total_revenue = get_revenue(df.iloc[:, -1])
 
-# TODO:
-# - Tkinter GUI
-# - open file button
-# - display results
-# - copy to clipboard button and indicate once copied
-
-
+    print("File:", file)
+    print("Total Invoices:", total_invoices)
+    print("Total Revenue:", total_revenue)
+    # print_invoices(df.iloc[:, 1])
