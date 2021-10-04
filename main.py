@@ -13,10 +13,8 @@ def get_row_count(sheet):
     return len(sheet.index)
 
 
-def print_invoices(sheet):
-    print("Invoices:\n")
-    for invoice in sheet.tolist():
-        print("\"" + invoice + "\"")
+def get_invoices(sheet):
+    return sheet['Invoice#'].to_string(index=False)
 
 
 def open_file():
@@ -27,29 +25,33 @@ def open_file():
     )
     df = pd.read_excel(file, sheet_name=-1)  # create df of spreadsheet
 
-    file_name = os.path.basename(file)
-    total_invoices = get_row_count(df)
+    invoice_count = get_row_count(df)
     total_revenue = get_revenue(df.iloc[:, -1].sum())
+    invoices = get_invoices(df)
 
     # display file
-    file_txt = tk.Text(root)
-    file_txt.insert(tk.END, file_name)
+    file_txt = tk.Text(root, height=5, width=52)
+    file_txt.insert(tk.END, os.path.basename(file))
     file_txt.config(state='disabled')
-    file_txt.pack()
+    file_txt.grid(row=0, column=1)
 
     # display total invoices
-    total_invoices_txt = tk.Text(root)
-    total_invoices_txt.insert(tk.END, total_invoices)
-    total_invoices_txt.config(state=tk.DISABLED)
-    total_invoices_txt.pack()
+    invoice_count_txt = tk.Text(root, height=5, width=52)
+    invoice_count_txt.insert(tk.END, invoice_count)
+    invoice_count_txt.config(state=tk.DISABLED)
+    invoice_count_txt.pack(row=1, column=2)
 
     # display total revenue
-    total_revenue_txt = tk.Text(root)
+    total_revenue_txt = tk.Text(root, height=5, width=52)
     total_revenue_txt.insert(tk.END, total_revenue)
     total_revenue_txt.config(state=tk.DISABLED)
-    total_revenue_txt.pack()
+    total_revenue_txt.pack(row=2, column=3)
 
-    print_invoices(df)
+    # display total invoices
+    invoice_list_txt = tk.Text(root, height=5, width=52)
+    invoice_list_txt.insert(tk.END, invoices)
+    invoice_list_txt.config(state=tk.DISABLED)
+    invoice_list_txt.pack(row=3, column=4)
 
 
 if __name__ == '__main__':
@@ -58,6 +60,6 @@ if __name__ == '__main__':
     root.geometry('600x400+50+50')
 
     button = tk.Button(root, text="Open", command=open_file)
-    button.pack(side=tk.TOP, pady=5)
+    button.grid(row=1, column=0, pady=2)
 
     root.mainloop()
