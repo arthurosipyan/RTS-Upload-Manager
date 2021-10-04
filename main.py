@@ -14,7 +14,13 @@ def get_row_count(sheet):
 
 
 def get_invoices(sheet):
-    return sheet['Invoice#'].to_string(index=False)
+    invoices = sheet['Invoice#'].to_string(index=False).split('\n')
+    print(len(invoices))
+    rt = ''
+    for i in invoices:
+        rt += '\"{}.pdf\" '.format(i)
+    print(rt)
+    return rt
 
 
 def open_file():
@@ -39,19 +45,19 @@ def open_file():
     invoice_count_txt = tk.Text(root, height=5, width=52)
     invoice_count_txt.insert(tk.END, invoice_count)
     invoice_count_txt.config(state=tk.DISABLED)
-    invoice_count_txt.pack(row=1, column=2)
+    invoice_count_txt.grid(row=1, column=1)
 
     # display total revenue
     total_revenue_txt = tk.Text(root, height=5, width=52)
     total_revenue_txt.insert(tk.END, total_revenue)
     total_revenue_txt.config(state=tk.DISABLED)
-    total_revenue_txt.pack(row=2, column=3)
+    total_revenue_txt.grid(row=2, column=1)
 
     # display total invoices
     invoice_list_txt = tk.Text(root, height=5, width=52)
     invoice_list_txt.insert(tk.END, invoices)
     invoice_list_txt.config(state=tk.DISABLED)
-    invoice_list_txt.pack(row=3, column=4)
+    invoice_list_txt.grid(row=3, column=1)
 
 
 if __name__ == '__main__':
